@@ -22,9 +22,19 @@ Projeto desenvolvido para a disciplina de Programação Orientada a Objetos.
 - Encapsulamento
 - Associação entre classes
 
+  
+integrantes:
 alekk (fumaça)
+
+
 sebão (lenda)
+
+
 lotar (alemã)
+
+
 renan (siuu)
+
+
 
 
