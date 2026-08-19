@@ -26,3 +26,4 @@ class Ave(Animal):
         else:
             return "ALERTA: Check-up respiratório atrasado ou não informado."
     
+    
