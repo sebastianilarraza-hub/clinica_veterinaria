@@ -33,34 +33,64 @@ def escolher_tutor(clinica):
             print("Opção inválida.")
             return None
         return clinica.tutores[opcao - 1]
-    except:
-        print("Entrada inválida.")
+    except ValueError:
+        print("Entrada inválida. Digite o número do tutor.")
         return None
 
 
-def main():
+def ler_idade():
+    while True:
+        try:
+            idade = int(input("Idade: "))
+            if idade < 0:
+                print("A idade não pode ser negativa.")
+                continue
+            return idade
+        except ValueError:
+            print("Digite uma idade válida usando apenas números.")
 
+
+def ler_peso():
+    while True:
+        try:
+            peso = float(input("Peso: "))
+            if peso <= 0:
+                print("O peso deve ser maior que zero.")
+                continue
+            return peso
+        except ValueError:
+            print("Digite um peso válido. Exemplo: 12.5")
+
+
+def ler_nome(mensagem):
+    while True:
+        nome = input(mensagem).strip()
+        if nome:
+            return nome
+        print("O nome não pode ficar vazio.")
+
+
+def main():
     clinica = ClinicaVeterinaria()
 
     while True:
-
         menu()
-
-        opcao = input("Escolha uma opção: ")
+        opcao = input("Escolha uma opção: ").strip()
 
         if opcao == "1":
+            nome = ler_nome("Nome: ")
+            telefone = input("Telefone: ").strip()
+            endereco = input("Endereço: ").strip()
 
-            nome = input("Nome: ")
-            telefone = input("Telefone: ")
-            endereco = input("Endereço: ")
+            if clinica.buscar_tutor(nome) is not None:
+                print("Já existe um tutor cadastrado com esse nome.")
+                continue
 
             tutor = Tutor(nome, telefone, endereco)
             clinica.cadastrar_tutor(tutor)
-
             print("Tutor cadastrado com sucesso!")
 
         elif opcao == "2":
-
             tutor = escolher_tutor(clinica)
 
             if tutor is None:
@@ -71,30 +101,35 @@ def main():
             print("2 - Gato")
             print("3 - Ave")
 
-            tipo = input("Escolha: ")
-
-            nome = input("Nome do animal: ")
-            idade = int(input("Idade: "))
-            peso = float(input("Peso: "))
-
-            if tipo == "1":
-                vacina = input("Vacina antirrábica em dia? (s/n): ").lower() == "s"
-                animal = Cachorro(nome, idade, peso, tutor, vacina)
-
-            elif tipo == "2":
-                vacina = input("Vacina antirrábica em dia? (s/n): ").lower() == "s"
-                animal = Gato(nome, idade, peso, tutor, vacina)
-
-            elif tipo == "3":
-                checkup = input("Check-up respiratório em dia? (s/n): ").lower() == "s"
-                animal = Ave(nome, idade, peso, tutor, checkup)
-
-            else:
+            tipo = input("Escolha: ").strip()
+            if tipo not in ("1", "2", "3"):
                 print("Tipo inválido.")
                 continue
 
-            clinica.cadastrar_animal(animal)
-            print("Animal cadastrado com sucesso!")
+            nome = ler_nome("Nome do animal: ")
+            if clinica.buscar_animal(nome) is not None:
+                print("Já existe um animal cadastrado com esse nome.")
+                continue
+
+            idade = ler_idade()
+            peso = ler_peso()
+
+            if tipo == "1":
+                vacina = input("Vacina antirrábica em dia? (s/n): ").strip().lower() == "s"
+                animal = Cachorro(nome, idade, peso, tutor, vacina)
+
+            elif tipo == "2":
+                vacina = input("Vacina antirrábica em dia? (s/n): ").strip().lower() == "s"
+                animal = Gato(nome, idade, peso, tutor, vacina)
+
+            else:
+                checkup = input("Check-up respiratório em dia? (s/n): ").strip().lower() == "s"
+                animal = Ave(nome, idade, peso, tutor, checkup)
+
+            if clinica.cadastrar_animal(animal):
+                print("Animal cadastrado com sucesso!")
+            else:
+                print("Não foi possível cadastrar o animal.")
 
         elif opcao == "3":
             clinica.listar_tutores()
@@ -103,9 +138,7 @@ def main():
             clinica.listar_animais()
 
         elif opcao == "5":
-
-            nome = input("Nome do tutor: ")
-
+            nome = input("Nome do tutor: ").strip()
             tutor = clinica.buscar_tutor(nome)
 
             if tutor:
@@ -114,9 +147,7 @@ def main():
                 print("Tutor não encontrado.")
 
         elif opcao == "6":
-
-            nome = input("Nome do animal: ")
-
+            nome = input("Nome do animal: ").strip()
             animal = clinica.buscar_animal(nome)
 
             if animal:
@@ -125,22 +156,18 @@ def main():
                 print("Animal não encontrado.")
 
         elif opcao == "7":
-
-            nome = input("Nome do tutor: ")
+            nome = input("Nome do tutor: ").strip()
             clinica.listar_animais_tutor(nome)
 
         elif opcao == "8":
-
             clinica.listar_atencao_especial()
 
         elif opcao == "9":
-
             print("Encerrando o sistema...")
             break
 
         else:
-
-            print("Opção inválida.")
+            print("Opção inválida. Escolha uma opção de 1 a 9.")
 
 
 if __name__ == "__main__":
