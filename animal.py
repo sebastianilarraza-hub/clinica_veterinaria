@@ -1,9 +1,12 @@
 from abc import ABC, abstractmethod
 
+
 class Animal(ABC):
+    
+    idade_limite_especial = 0
 
     def __init__(self, nome, idade, peso, tutor):
-        self.nome = nome
+        self.nome = nome.strip()
         self.idade = idade
         self.peso = peso
         self.tutor = tutor
