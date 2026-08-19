@@ -5,11 +5,20 @@ class ClinicaVeterinaria:
         self.animais = []
 
     def cadastrar_tutor(self, tutor):
+        if self.buscar_tutor(tutor.nome) is not None:
+            return False
+
         self.tutores.append(tutor)
+        return True
 
     def cadastrar_animal(self, animal):
+        if self.buscar_animal(animal.nome) is not None:
+            return False
+
         self.animais.append(animal)
-        animal.tutor.adicionar_animal(animal)
+        if animal not in animal.tutor.animais:
+            animal.tutor.adicionar_animal(animal)
+        return True
 
     def listar_tutores(self):
         if len(self.tutores) == 0:
